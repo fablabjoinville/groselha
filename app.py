@@ -12,11 +12,12 @@ def index():
 @app.route('/macs', methods=['POST'])
 def save_macs():
 	r = request.get_json()
-	return (str(r))
+	return str(r)
+
 
 @app.route('/who', methods=['GET'])
 def who_is_in_the_room():
-	return ('WHO')
+	return 'WHO'
 
 
 if __name__ == "__main__":
