@@ -56,9 +56,15 @@ def save_macs():
 @app.route('/who', methods=['GET'])
 def who_is_in_the_room():
     online_users = User.online_users()
-    names = "\n".join([user.first_name + ' ' + user.last_name for user in online_users])
 
-    return("Há " + str(len(online_users)) + " pessoa(s) no Fab Lab:\n\n" + names)
+    if len(online_users) == 0:
+        return('Não há ninguém no laboratório :(')
+    elif len(online_users) == 1:
+        name = online_users[0].first_name + ' ' + online_users[0].last_name
+        return("Só o " + name + " está no laboratório. Tadinho :(")
+    else:
+        names = "\n".join([user.first_name + ' ' + user.last_name for user in online_users])
+        return("Há " + str(len(online_users)) + " pessoa(s) no Fab Lab:\n\n" + names)
 
 
 if __name__ == "__main__":
