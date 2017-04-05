@@ -58,7 +58,7 @@ def who_is_in_the_room():
     online_users = User.online_users()
     names = "\n".join([user.first_name + ' ' + user.last_name for user in online_users])
 
-    return("Há " + len(online_users) + " pessoa(s) no Fab Lab:\n\n" + names)
+    return("Há " + str(len(online_users)) + " pessoa(s) no Fab Lab:\n\n" + names)
 
 
 if __name__ == "__main__":
