@@ -27,6 +27,18 @@ class User(db.Model):
     def __repr__(self):
         return '<User %r %r >' % (self.first_name, self.last_name)
 
+    @classmethod
+    def online_users(cls):
+        query = User.last_online_at > datetime.datetime.utcnow() - datetime.timedelta(minutes=2)
+        users = cls \
+           .query \
+           .with_entities(User.first_name, User.last_name) \
+           .distinct(User.first_name, User.last_name) \
+           .filter(query) \
+           .all()
+
+        return(users)
+
 
 @app.route('/macs', methods=['POST'])
 def save_macs():
@@ -43,11 +55,10 @@ def save_macs():
 
 @app.route('/who', methods=['GET'])
 def who_is_in_the_room():
-    query = User.last_online_at > datetime.datetime.utcnow() - datetime.timedelta(minutes=2)
-    online_users = User.query.with_entities(User.first_name, User.last_name).filter(query).all()
-    serialized_users = [{ 'first_name': user.first_name, 'last_name': user.last_name } for user in online_users]
+    online_users = User.online_users()
+    names = "\n".join([user.first_name + ' ' + user.last_name for user in online_users])
 
-    return(jsonify(serialized_users))
+    return("Há " + len(online_users) + " pessoa(s) no Fab Lab:\n\n" + names)
 
 
 if __name__ == "__main__":
