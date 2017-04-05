@@ -6,7 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'postgresql:///groselha_dev')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'postgresql://localhost/groselha_dev')
 db = SQLAlchemy(app)
 
 class User(db.Model):
@@ -30,12 +30,14 @@ class User(db.Model):
     @classmethod
     def online_users(cls):
         query = User.last_online_at > datetime.datetime.utcnow() - datetime.timedelta(minutes=2)
-
-        cls.query \
+        users = cls \
+           .query \
            .with_entities(User.first_name, User.last_name) \
            .distinct(User.first_name, User.last_name) \
            .filter(query) \
            .all()
+
+        return(users)
 
 
 @app.route('/macs', methods=['POST'])
@@ -53,8 +55,10 @@ def save_macs():
 
 @app.route('/who', methods=['GET'])
 def who_is_in_the_room():
-    names = "\n".join([user.first_name + ' ' + user.last_name for user in User.online_users])
-    return("Há " + len(online_users) + " pessoas no Fab Lab:\n\n" + names)
+    online_users = User.online_users()
+    names = "\n".join([user.first_name + ' ' + user.last_name for user in online_users])
+
+    return("Há " + len(online_users) + " pessoa(s) no Fab Lab:\n\n" + names)
 
 
 if __name__ == "__main__":
