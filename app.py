@@ -4,6 +4,8 @@ import sys
 from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 
+SLACK_TOKEN = os.environ.get('SLACK_TOKEN', None)
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'postgresql://localhost/groselha_dev')
@@ -55,6 +57,8 @@ def save_macs():
 
 @app.route('/who', methods=['GET'])
 def who_is_in_the_room():
+    if request.args.get('token') != SLACK_TOKEN: return('', 401)
+
     online_users = User.online_users()
 
     if len(online_users) == 0:
