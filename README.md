@@ -22,4 +22,8 @@ Create news users with:
 
 ## ARP Scan Setup
 
-Use `scan.sh` script to scan the ARP table and send mac addresses to our servers.
+Use `scan.sh` script to scan the ARP table and send mac addresses to our servers:
+
+```
+./scan.sh eth0 host.com token
+```
