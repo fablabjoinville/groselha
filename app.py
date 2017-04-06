@@ -70,7 +70,7 @@ def who_is_in_the_room():
         return("Só o " + name + " está no laboratório. Tadinho :(")
     else:
         names = "\n".join([user.first_name + ' ' + user.last_name for user in online_users])
-        return("Há " + str(len(online_users)) + " pessoa(s) no Fab Lab:\n\n" + names)
+        return("Há " + str(len(online_users)) + " pessoas no laboratório:\n\n" + names)
 
 
 if __name__ == "__main__":
