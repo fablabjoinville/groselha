@@ -4,7 +4,7 @@ import sys
 from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 
-SLACK_TOKEN = os.environ.get('SLACK_TOKEN', None)
+TOKEN = os.environ.get('TOKEN', None)
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
@@ -44,6 +44,8 @@ class User(db.Model):
 
 @app.route('/macs', methods=['POST'])
 def save_macs():
+    if request.args.get('token') != TOKEN: return('', 401)
+
     macs = request.get_json()['macs']
     users = User.query.filter(User.mac_address.in_(macs)).all()
 
@@ -57,7 +59,7 @@ def save_macs():
 
 @app.route('/who', methods=['GET'])
 def who_is_in_the_room():
-    if request.args.get('token') != SLACK_TOKEN: return('', 401)
+    if request.args.get('token') != TOKEN: return('', 401)
 
     online_users = User.online_users()
 
