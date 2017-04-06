@@ -44,7 +44,7 @@ class User(db.Model):
 
 @app.route('/macs', methods=['POST'])
 def save_macs():
-    if request.args.get('token') != TOKEN: return('', 401)
+    if request.get_json()['token'] != TOKEN: return('', 401)
 
     macs = request.get_json()['macs']
     users = User.query.filter(User.mac_address.in_(macs)).all()
