@@ -3,6 +3,7 @@ import os
 import sys
 from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
+from random import randint
 
 TOKEN = os.environ.get('TOKEN', None)
 
