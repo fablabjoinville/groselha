@@ -71,6 +71,17 @@ def who_is_in_the_room():
     else:
         names = "\n".join([user.first_name + ' ' + user.last_name for user in online_users])
         return("Há " + str(len(online_users)) + " pessoas no laboratório:\n\n" + names)
+    
+@app.route('/gifs', methods=['GET'])
+def get_coffee_gifs():
+    if request.args.get('token') != TOKEN: return('', 401)
+    
+    coffee_gifs = ["oZEBLugoTthxS", "DrJm6F9poo4aA", "GhNCif5GnFBYY", "687qS11pXwjCM", \
+                   "zJ8ldRaGLnHTa", "3oFyDpRagf96Uz9rzO", "3oKIPx16LFvftHPLiM", "5Ztn33chuvutW"]
+
+    url = "https://media.giphy.com/media/" + coffee_gifs[randint(0,8)] + "/giphy.gif"
+
+    return("@here Café quentinho na cafeteira!\n\n" + url)
 
 
 if __name__ == "__main__":
