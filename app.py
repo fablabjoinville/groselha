@@ -1,10 +1,25 @@
+# -*- coding: utf-8 -*-
 import datetime
 import os
 import sys
 from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
+from random import randint
+import requests
 
 TOKEN = os.environ.get('TOKEN', None)
+SLACK_WEBHOOK_URL = 'https://hooks.slack.com/' + os.environ.get('SLACK_WEBHOOK_PATH')
+
+COFFEE_GIFS = [
+  'oZEBLugoTthxS',
+  'DrJm6F9poo4aA',
+  'GhNCif5GnFBYY',
+  '687qS11pXwjCM',
+  'zJ8ldRaGLnHTa',
+  '3oFyDpRagf96Uz9rzO',
+  '3oKIPx16LFvftHPLiM',
+  '5Ztn33chuvutW'
+]
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
@@ -70,7 +85,19 @@ def who_is_in_the_room():
         return("Só o " + name + " está no laboratório. Tadinho :(")
     else:
         names = "\n".join([user.first_name + ' ' + user.last_name for user in online_users])
-        return("Há " + str(len(online_users)) + " pessoas no laboratório:\n\n" + names)
+        return("Há " + str(len(online_users)) + " pessoas no laboratório:\n\n" + names) 
+
+@app.route('/coffee_gifs', methods=['POST'])
+def get_coffee_gifs():
+    gif_url = 'https://media.giphy.com/media/' + COFFEE_GIFS[randint(0,8)] + '/giphy.gif'
+    gif_data = {'text': ' ', 'image_url': gif_url}
+
+    request.post(
+    SLACK_WEBHOOK_URL,
+    data={'text': '@here Café quentinho na cafeteira!', 'link_names': 1, 'attachments': [gif_data]},
+    headers={'Content-Type': 'application/x-www-form-urlencoded'}
+    )
+    return('', 200)
 
 
 if __name__ == "__main__":
