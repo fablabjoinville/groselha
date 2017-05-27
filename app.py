@@ -88,9 +88,9 @@ def who_is_in_the_room():
 
 @app.route('/coffee_gifs', methods=['GET'])
 def get_coffee_gifs():
-    a = randint(0,6)
+    gif_id = randint(0,6)
 
-    gif_url = 'https://media.giphy.com/media/' + COFFEE_GIFS[a] + '/giphy.gif'
+    gif_url = 'https://media.giphy.com/media/' + COFFEE_GIFS[gif_id] + '/giphy.gif'
     gif_data = {'image_url': gif_url}
 
     r = requests.post(SLACK_WEBHOOK_URL,
