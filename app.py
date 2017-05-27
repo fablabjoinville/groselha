@@ -17,7 +17,6 @@ COFFEE_GIFS = [
   '687qS11pXwjCM',
   'zJ8ldRaGLnHTa',
   '3oFyDpRagf96Uz9rzO',
-  '3oKIPx16LFvftHPLiM',
   '5Ztn33chuvutW'
 ]
 
@@ -87,18 +86,18 @@ def who_is_in_the_room():
         names = "\n".join([user.first_name + ' ' + user.last_name for user in online_users])
         return("Há " + str(len(online_users)) + " pessoas no laboratório:\n\n" + names) 
 
-@app.route('/coffee_gifs', methods=['POST'])
+@app.route('/coffee_gifs', methods=['GET'])
 def get_coffee_gifs():
-    gif_url = 'https://media.giphy.com/media/' + COFFEE_GIFS[randint(0,8)] + '/giphy.gif'
-    gif_data = {'text': ' ', 'image_url': gif_url}
+    a = randint(0,6)
 
-    request.post(
-    SLACK_WEBHOOK_URL,
-    data={'text': '@here Café quentinho na cafeteira!', 'link_names': 1, 'attachments': [gif_data]},
-    headers={'Content-Type': 'application/x-www-form-urlencoded'}
-    )
+    gif_url = 'https://media.giphy.com/media/' + COFFEE_GIFS[a] + '/giphy.gif'
+    gif_data = {'image_url': gif_url}
+
+    r = requests.post(SLACK_WEBHOOK_URL,
+                      json={"text": "<!here> Café quentinho na cafeteira!", 
+                            "link_names": 1,
+                            "attachments": [gif_data]})
     return('', 200)
-
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
