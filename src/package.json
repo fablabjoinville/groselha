@@ -1,0 +1,14 @@
+{
+  "name": "groselha",
+  "version": "1.0.0",
+  "description": "Fab Lab's bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "yarn test"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "webpack": "^4.4.1"
+  }
+}
