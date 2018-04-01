@@ -1,8 +1,8 @@
 import React from "react";
 import { Jumbotron, Button, Form, FormGroup, FormControl, Col, Radio, Row } from 'react-bootstrap';
 
-import Top from './Top'
 import Description from './Description'
+import Top from './Top'
 
 
 const styles = {
@@ -15,12 +15,36 @@ const styles = {
   },
 }
 
+
 export default class AppForm extends React.Component {
   constructor() {
     super()
 
     this.handleSubmit = this.handleSubmit.bind(this)
-    this.state = {}
+    this.submitButton = this.submitButton.bind(this)
+    this.anyError = this.anyError.bind(this)
+    this.state = {
+      firstName: '',
+      lastName: '',
+      macAddress: '',
+      kind: '',
+    }
+  }
+
+  anyError() {
+    let stateValues = Object.values(this.state)
+    let stateValuesLength = stateValues.map((i) => i.length)
+    if (stateValuesLength.indexOf(0) === -1) // There is no value equal to '0', therefore, no errors
+      return true
+    else
+      return false
+  }
+
+  submitButton() {
+    if (this.anyError())
+      return (<Button type="submit" onClick={this.handleSubmit} bsStyle="success">Registrar</Button>)
+    else
+      return (<Button type="submit" disabled bsStyle="success">Registrar</Button>)
   }
 
   handleSubmit(body) {
@@ -40,40 +64,44 @@ export default class AppForm extends React.Component {
         <Row style={styles.content}>
           <Description />
           <Form horizontal>
-            <FormGroup controlId="formFirstName">
+            <FormGroup>
               <Col>
                 <b>Nome</b>
               </Col>
               <Col>
                 <FormControl
-                  type="firstName"
+                  type="text"
                   onChange={(e) => this.setState({firstName: e.target.value})}
                 />
               </Col>
             </FormGroup>
-            <FormGroup controlId="formLastName">
+            <FormGroup>
               <Col>
                 <b>Sobrenome</b>
               </Col>
               <Col>
                 <FormControl
-                  type="LastName"
-                  onChange={(e) => this.setState({lastName: e.target.value})}
+                  type="text"
+                  onChange={(e) => (
+                    this.setState({lastName: e.target.value})
+                  )}
                 />
               </Col>
             </FormGroup>
-            <FormGroup controlId="formMacAddess">
+            <FormGroup>
               <Col>
                 <b>Endereço MAC</b>
               </Col>
               <Col>
                 <FormControl
-                  type="MacAddess"
-                  onChange={(e) => this.setState({macAddress: e.target.value})}
+                  type="text"
+                  onChange={(e) => (
+                    this.setState({macAddress: e.target.value})
+                  )}
                 />
               </Col>
             </FormGroup>
-            <FormGroup controlId="formKind">
+            <FormGroup>
               <Col>
                 <b>Tipo</b>
               </Col>
@@ -88,11 +116,7 @@ export default class AppForm extends React.Component {
             </FormGroup>
             <FormGroup>
               <Col smOffset={2}>
-                <Button
-                  type="submit"
-                  onClick={this.handleSubmit}
-                  bsStyle="success">Registrar
-                </Button>
+                {this.submitButton()}
               </Col>
             </FormGroup>
           </Form>

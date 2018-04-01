@@ -9,8 +9,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_webpack import Webpack
 import requests
 
-# TOKEN = os.environ.get('TOKEN', None)
-# SLACK_WEBHOOK_URL = 'https://hooks.slack.com/' + os.environ.get('SLACK_WEBHOOK_PATH')
+TOKEN = os.environ.get('TOKEN', None)
+SLACK_WEBHOOK_URL = 'https://hooks.slack.com/' + os.environ.get('SLACK_WEBHOOK_PATH')
 
 COFFEE_GIFS = [
   'oZEBLugoTthxS',
@@ -71,7 +71,7 @@ def register_macs():
             last_name=args['lastName'],
             mac_address=args['macAddress'],
             kind=args['kind'],
-            last_online_at=datetime.now()
+            last_online_at=datetime.datetime.utcnow()
         )
         db.session.add(new_user)
         db.session.commit()
