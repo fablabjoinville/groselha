@@ -59,12 +59,24 @@ class User(db.Model):
 
         return(users)
 
+
 @app.route('/register-macs', methods=['GET', 'POST'])
 def register_macs():
     if request.method == 'GET':
-      return render_template('index.html')
-    else:
-      print('HERERERER')
+        return render_template('index.html')
+    elif request.method == 'POST':
+        args = request.get_json()
+        new_user = User(
+            first_name=args['firstName'],
+            last_name=args['lastName'],
+            mac_address=args['macAddress'],
+            kind=args['kind'],
+            last_online_at=datetime.now()
+        )
+        db.session.add(new_user)
+        db.session.commit()
+
+        return('ok', 200)
 
 
 @app.route('/macs', methods=['POST'])

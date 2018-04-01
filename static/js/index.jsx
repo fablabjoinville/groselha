@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import App from "./App";
+import AppForm from "./AppForm";
 
 
-ReactDOM.render(<App />, document.getElementById("content"));
+ReactDOM.render(<AppForm />, document.getElementById("content"));
