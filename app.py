@@ -6,7 +6,6 @@ import sys
 
 from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
-from flask_webpack import Webpack
 import requests
 
 TOKEN = os.environ.get('TOKEN', None)

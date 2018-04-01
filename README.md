@@ -6,7 +6,9 @@ The Fab Lab's bot. By typing `/quem` at our Slack, Groselha tells who is at the 
 
 ### Database
 
-`/bin/bash config_db.sh`
+```sh
+/bin/bash config_db.sh
+```
 
 ```py
 >>> from app import db
@@ -21,9 +23,11 @@ Start the server with `FLASK DEBUG python app.py` at the root folder.
 
 Enter the `static` file and run `npm run watch`
 
-`cd static`
-(For the first time) `npm install`
-`npm run watch`
+```sh
+cd static
+(Only for the first time) npm install
+npm run watch
+```
 
 ## Running Heroku server
 
@@ -31,6 +35,10 @@ Enter the `static` file and run `npm run watch`
 
 `heroku run "python" -a fablabjoinville-bot`
 
+
+## Registering a new user
+
+Go to `/register-macs` and fill in the form.
 
 ## ARP Scan Setup
 
