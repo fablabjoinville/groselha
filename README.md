@@ -1,24 +1,44 @@
-# groselha
+# Groselha
 
-The Fab Lab's bot.
+The Fab Lab's bot. By typing `/quem` at our Slack, Groselha tells who is at the Fab Lab given their mac addresses.
 
 ## Setup
 
-Setup the database by running the following in your python shell:
+### Database
 
+```sh
+/bin/bash config_db.sh
 ```
+
+```py
 >>> from app import db
 >>> db.create_all()
 ```
 
-Create news users with:
+### Flask server
 
+Start the server with `FLASK DEBUG python app.py` at the root folder.
+
+### Webpacker
+
+Enter the `static` file and run `npm run watch`
+
+```sh
+cd static
+(Only for the first time) npm install
+npm run watch
 ```
->>> from app import db, User
->>> user = User('first_name', 'last_name', 'kind', 'mac_address', 'last_online_at')
->>> db.session.add(user)
->>> db.session.commit()
-```
+
+## Running Heroku server
+
+(First, make sure you have the credentials to access this app in Heroku).
+
+`heroku run "python" -a fablabjoinville-bot`
+
+
+## Registering a new user
+
+Go to `/register-macs` and fill in the form.
 
 ## ARP Scan Setup
 

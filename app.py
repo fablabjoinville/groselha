@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 import datetime
 import os
+from random import randint
 import sys
+
 from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
-from random import randint
 import requests
 
 TOKEN = os.environ.get('TOKEN', None)
@@ -20,10 +21,12 @@ COFFEE_GIFS = [
   '5Ztn33chuvutW'
 ]
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static/dist', template_folder='static')
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'postgresql://localhost/groselha_dev')
 db = SQLAlchemy(app)
+
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -56,6 +59,25 @@ class User(db.Model):
         return(users)
 
 
+@app.route('/register-macs', methods=['GET', 'POST'])
+def register_macs():
+    if request.method == 'GET':
+        return render_template('index.html')
+    elif request.method == 'POST':
+        args = request.get_json()
+        new_user = User(
+            first_name=args['firstName'],
+            last_name=args['lastName'],
+            mac_address=args['macAddress'],
+            kind=args['kind'],
+            last_online_at=datetime.datetime.utcnow()
+        )
+        db.session.add(new_user)
+        db.session.commit()
+
+        return('ok', 200)
+
+
 @app.route('/macs', methods=['POST'])
 def save_macs():
     if request.get_json()['token'] != TOKEN: return('', 401)
@@ -84,19 +106,20 @@ def who_is_in_the_room():
         return("Só o " + name + " está no laboratório. Tadinho :(")
     else:
         names = "\n".join([user.first_name + ' ' + user.last_name for user in online_users])
-        return("Há " + str(len(online_users)) + " pessoas no laboratório:\n\n" + names) 
+        return("Há " + str(len(online_users)) + " pessoas no laboratório:\n\n" + names)
+
 
 @app.route('/coffee_gifs', methods=['GET'])
 def get_coffee_gifs():
     if request.get_json()['token'] != TOKEN: return('', 401)
-    
+
     gif_id = randint(0,6)
 
     gif_url = 'https://media.giphy.com/media/' + COFFEE_GIFS[gif_id] + '/giphy.gif'
     gif_data = {'image_url': gif_url}
 
     r = requests.post(SLACK_WEBHOOK_URL,
-                      json={"text": "<!here> Café quentinho na cafeteira!", 
+                      json={"text": "<!here> Café quentinho na cafeteira!",
                             "link_names": 1,
                             "attachments": [gif_data]})
     return('', 200)
