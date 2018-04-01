@@ -17,14 +17,11 @@ The Fab Lab's bot. By typing `/quem` at our Slack, Groselha tells who is at the 
 
 ### Flask server
 
-Start the server with `FLASK DEBUG python app.py` at the root folder.
+Start the server with `FLASK_DEBUG=true python app.py` at the root folder.
 
 ### Webpack
 
-Enter the `static` file and run `npm run watch`
-
 ```sh
-cd static
 (Only for the first time) npm install
 npm run watch
 ```

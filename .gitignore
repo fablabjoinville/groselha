@@ -85,4 +85,4 @@ ENV/
 # Spyder project settings
 .spyderproject
 
-static/node_modules/*
+node_modules/*
