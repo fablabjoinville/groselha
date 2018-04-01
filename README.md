@@ -19,7 +19,7 @@ The Fab Lab's bot. By typing `/quem` at our Slack, Groselha tells who is at the 
 
 Start the server with `FLASK DEBUG python app.py` at the root folder.
 
-### Webpacker
+### Webpack
 
 Enter the `static` file and run `npm run watch`
 
