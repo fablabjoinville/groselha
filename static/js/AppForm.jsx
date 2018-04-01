@@ -22,7 +22,7 @@ export default class AppForm extends React.Component {
 
     this.handleSubmit = this.handleSubmit.bind(this)
     this.submitButton = this.submitButton.bind(this)
-    this.anyError = this.anyError.bind(this)
+    this.noErrors = this.noErrors.bind(this)
     this.state = {
       firstName: '',
       lastName: '',
@@ -31,7 +31,7 @@ export default class AppForm extends React.Component {
     }
   }
 
-  anyError() {
+  noErrors() {
     let stateValues = Object.values(this.state)
     let stateValuesLength = stateValues.map((i) => i.length)
     if (stateValuesLength.indexOf(0) === -1) // There is no value equal to '0', therefore, no errors
@@ -41,7 +41,7 @@ export default class AppForm extends React.Component {
   }
 
   submitButton() {
-    if (this.anyError())
+    if (this.noErrors())
       return (<Button type="submit" onClick={this.handleSubmit} bsStyle="success">Registrar</Button>)
     else
       return (<Button type="submit" disabled bsStyle="success">Registrar</Button>)

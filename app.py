@@ -9,7 +9,7 @@ from flask_sqlalchemy import SQLAlchemy
 import requests
 
 TOKEN = os.environ.get('TOKEN', None)
-SLACK_WEBHOOK_URL = 'https://hooks.slack.com/' + os.environ.get('SLACK_WEBHOOK_PATH')
+# SLACK_WEBHOOK_URL = 'https://hooks.slack.com/' + os.environ.get('SLACK_WEBHOOK_PATH')
 
 COFFEE_GIFS = [
   'oZEBLugoTthxS',
