@@ -61,7 +61,10 @@ class User(db.Model):
 
 @app.route('/register-macs', methods=['GET', 'POST'])
 def register_macs():
-    return render_template('index.html')
+    if request.method == 'GET':
+      return render_template('index.html')
+    else:
+      print('HERERERER')
 
 
 @app.route('/macs', methods=['POST'])
